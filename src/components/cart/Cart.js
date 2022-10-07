@@ -6,13 +6,10 @@ const Cart = ({ cart }) => {
   let shipping = 0;
   let tex = 0;
   let grandTotal = 0;
-  let quantity=0;
+  let quantity = 0;
   for (let product of cart) {
-    console.log(product)
-    quantity=quantity+product.quantity
-    console.log(quantity)
-    console.log(product.quantity)
-    total = total + product.price*product.quantity;
+    quantity = quantity + product.quantity;
+    total = total + product.price * product.quantity;
     shipping = shipping + product.shipping;
     tex = parseInt((total * 0.1).toFixed(2));
     grandTotal = total + shipping + tex;
