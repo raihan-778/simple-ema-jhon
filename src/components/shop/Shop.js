@@ -18,21 +18,37 @@ const Shop = () => {
 
   useEffect(() => {
     const storedCart = findCart();
+    console.log(storedCart);
+    const savedCart=[];
+    console.log(savedCart)
+    console.log(savedCart.length)
     for (const id in storedCart) {
-      const addedProduct = products.find((product) => product.id === id);
-      console.log(addedProduct);
-      // if (storedCart) {
-      //   let quantity = storedCart[id];
-      //   addedProduct.quantity = quantity;
-      //   console.log(quantity);
-      // }
+      const addedProduct=products.find(product=>product.id===id)
+      if(addedProduct){
+        console.log(addedProduct)
+        const quantity =storedCart[id]
+        addedProduct.quantity=quantity
+        savedCart.push(addedProduct)
+      }
     }
+    setCart(savedCart)
   }, [products]);
-  const handleAddToCart = (product) => {
+  const handleAddToCart = (selectedProduct) => {
+    let newCart=[]
+    const exist=cart.find(product=>product.id===selectedProduct.id)
+    if(!exist){
+      selectedProduct.quantity=1;
+      newCart=[...cart,selectedProduct]
+    }else{
+      const rest=cart.filter(product=>product.id!==selectedProduct.id)
+      exist.quantity=exist.quantity+1
+      newCart=[...rest,exist]
+
+    }
     /*  const newCart = cart.push(product) // not recomended */
-    const newCart = [...cart, product];
+     
     setCart(newCart);
-    addToDb(product.id);
+    addToDb(selectedProduct.id);
   };
 
   return (
