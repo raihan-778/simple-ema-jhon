@@ -40,7 +40,7 @@ const Orders = () => {
       </div>
       <div className="shopping-cart">
         <Cart handleClearCart={handleClearCart} cart={cart}>
-          <Link to={"/orders"}>Review Orders</Link>
+          <Link to={"/shipping"}>Continue Shipping</Link>
         </Cart>
       </div>
     </div>
