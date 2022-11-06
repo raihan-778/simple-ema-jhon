@@ -25,11 +25,16 @@
 .pagination button {
   margin-right: 15px;
   padding: 5px 10px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
 }
 .pagination .selected {
   background: goldenrod;
   border: gold;
   font-weight: 700;
+  font: bold;
+  border-radius: 4px;
+  border: 1px solid gold;
 }
 @media screen and (max-width: 1100px) {
   .products-container {
