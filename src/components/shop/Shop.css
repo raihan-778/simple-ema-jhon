@@ -17,6 +17,20 @@
   position: sticky;
   top: 0;
 }
+
+.pagination {
+  margin-left: 200px;
+  margin-top: 50px;
+}
+.pagination button {
+  margin-right: 15px;
+  padding: 5px 10px;
+}
+.pagination .selected {
+  background: goldenrod;
+  border: gold;
+  font-weight: 700;
+}
 @media screen and (max-width: 1100px) {
   .products-container {
     grid-template-columns: repeat(2, 1fr);

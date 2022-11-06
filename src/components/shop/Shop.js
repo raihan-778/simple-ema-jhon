@@ -1,52 +1,63 @@
-import React, { useEffect, useState } from "react";
-import { Link, useLoaderData } from "react-router-dom";
-import { addToDb, deleteShoppingCart, findCart } from "../../utilities/fakedb";
-import Cart from "../cart/Cart";
-import Product from "../product/Product";
-import "./Shop.css";
+import React, { useEffect, useState } from "react"
+import { Link, useLoaderData } from "react-router-dom"
+import { addToDb, deleteShoppingCart, findCart } from "../../utilities/fakedb"
+import Cart from "../cart/Cart"
+import Product from "../product/Product"
+import "./Shop.css"
+
+/*
+Count:loaded
+per page: 10
+number of pages : count/perpage
+page 
+ */
 
 const Shop = () => {
-  const products = useLoaderData();
-  const [cart, setCart] = useState([]);
+  const { products, count } = useLoaderData()
+  const [cart, setCart] = useState([])
+  const [page, setPage] = useState(0)
+  const [size, setsize] = useState(10)
+
+  const pages = Math.ceil(count / size)
 
   const handleClearCart = () => {
-    setCart([]);
-    deleteShoppingCart();
-  };
+    setCart([])
+    deleteShoppingCart()
+  }
 
   useEffect(() => {
-    const storedCart = findCart();
-    console.log(storedCart);
-    const savedCart = [];
-    console.log(savedCart);
-    console.log(savedCart.length);
+    const storedCart = findCart()
+    console.log(storedCart)
+    const savedCart = []
+    console.log(savedCart)
+    console.log(savedCart.length)
     for (const id in storedCart) {
-      const addedProduct = products.find((product) => product.id === id);
+      const addedProduct = products.find((product) => product._id === id)
       if (addedProduct) {
-        console.log(addedProduct);
-        const quantity = storedCart[id];
-        addedProduct.quantity = quantity;
-        savedCart.push(addedProduct);
+        console.log(addedProduct)
+        const quantity = storedCart[id]
+        addedProduct.quantity = quantity
+        savedCart.push(addedProduct)
       }
     }
-    setCart(savedCart);
-  }, [products]);
+    setCart(savedCart)
+  }, [products])
   const handleAddToCart = (selectedProduct) => {
-    let newCart = [];
-    const exist = cart.find((product) => product.id === selectedProduct.id);
+    let newCart = []
+    const exist = cart.find((product) => product._id === selectedProduct._id)
     if (!exist) {
-      selectedProduct.quantity = 1;
-      newCart = [...cart, selectedProduct];
+      selectedProduct.quantity = 1
+      newCart = [...cart, selectedProduct]
     } else {
-      const rest = cart.filter((product) => product.id !== selectedProduct.id);
-      exist.quantity = exist.quantity + 1;
-      newCart = [...rest, exist];
+      const rest = cart.filter((product) => product._id !== selectedProduct._id)
+      exist.quantity = exist.quantity + 1
+      newCart = [...rest, exist]
     }
     /*  const newCart = cart.push(product) // not recomended */
 
-    setCart(newCart);
-    addToDb(selectedProduct.id);
-  };
+    setCart(newCart)
+    addToDb(selectedProduct._id)
+  }
 
   return (
     <div className="shop-container">
@@ -54,11 +65,11 @@ const Shop = () => {
         {products.map((product) => {
           return (
             <Product
-              key={product.id}
+              key={product._id}
               handleAddToCart={handleAddToCart}
               product={product}
             ></Product>
-          );
+          )
         })}
       </div>
       <div className="shopping-cart">
@@ -67,8 +78,20 @@ const Shop = () => {
         </Cart>
         {/* <p>Total added product: {cart.length}</p> */}
       </div>
+      <div className="pagination">
+        <p>Currently Selected Page: {page}</p>
+        {[...Array(pages).keys()].map((number) => (
+          <button
+            className={page === number && "selected"}
+            onClick={() => setPage(number)}
+            key={number}
+          >
+            {number}
+          </button>
+        ))}
+      </div>
     </div>
-  );
-};
+  )
+}
 
-export default Shop;
+export default Shop
